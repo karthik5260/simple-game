@@ -28,15 +28,18 @@
 <body>
     <h1>Click the Box!</h1>
     <p>Score: <span id="score">0</span></p>
+    <p>Time Left: <span id="time">100</span> seconds</p>
     <div id="game-container">
         <div id="box"></div>
     </div>
     <script>
         let score = 0;
+        let timeLeft = 100;
         const box = document.getElementById("box");
         const scoreDisplay = document.getElementById("score");
+        const timeDisplay = document.getElementById("time");
         const container = document.getElementById("game-container");
-
+        
         function moveBox() {
             const maxX = container.clientWidth - box.clientWidth;
             const maxY = container.clientHeight - box.clientHeight;
@@ -45,14 +48,28 @@
             box.style.left = `${randomX}px`;
             box.style.top = `${randomY}px`;
         }
-
+        
         box.addEventListener("click", function() {
-            score++;
-            scoreDisplay.textContent = score;
-            moveBox();
+            if (timeLeft > 0) {
+                score++;
+                scoreDisplay.textContent = score;
+                moveBox();
+            }
         });
-
+        
+        function countdown() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timeDisplay.textContent = timeLeft;
+            } else {
+                alert("Game Over! Your final score is " + score);
+                box.style.pointerEvents = "none";
+            }
+        }
+        
+        setInterval(countdown, 1000);
         moveBox();
     </script>
 </body>
 </html>
+
